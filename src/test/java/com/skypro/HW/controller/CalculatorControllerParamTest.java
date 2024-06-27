@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CalculatorControllerParamTest {
     CalculatorService calculatorService = new CalculatorServiceImpl();
@@ -93,6 +94,7 @@ public class CalculatorControllerParamTest {
     @ParameterizedTest
     @MethodSource("argumentDivideParameterTest")
     public void checkDivideParameterTest(Integer num1, Integer num2, double expected) {
+        assertThrows(IllegalArgumentException.class, () -> calculatorService.divide(num1, num2));
         Double actual = calculatorService.divide(num1, num2);
         assertEquals(expected, actual);
     }
@@ -100,7 +102,7 @@ public class CalculatorControllerParamTest {
     @ParameterizedTest
     @CsvSource(value = {"16,4,4", "20,5,4", "36,6,6"})
     void checkDivideTest(Integer num1, Integer num2, Double expected) {
-
+        assertThrows(IllegalArgumentException.class, ()->calculatorService.divide(num1, num2));
         assertEquals(expected, calculatorService.divide(num1, num2));
     }
 

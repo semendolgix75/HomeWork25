@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 @RestController
 @RequestMapping("calculator")
@@ -22,28 +23,39 @@ public class CalculatorController {
     }
 
     @GetMapping("plus")
-    public ResponseEntity<String> plus(@RequestParam(required = false,name = "num1") Integer num1,@RequestParam(required = false,name = "num2") Integer num2) {
-
+    public ResponseEntity<String> plus(@RequestParam Integer num1,@RequestParam Integer num2) {
+        if (num1 == null || num2 == null) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Необходимо указать хотя бы один аргумент");
+        }
 
         return ResponseEntity.ok(num1+" + "+num2+"="+calculatorService.plus(num1,num2));
 
     }
     @GetMapping("minus")
-    public String minus(@RequestParam(required = false,name = "num1") Integer num1,@RequestParam(required = false,name = "num2") Integer num2) {
-
-        return num1+" - "+num2+"="+calculatorService.minus(num1,num2);
+    public ResponseEntity<String> minus(@RequestParam Integer num1,@RequestParam Integer num2) {
+        if (num1 == null || num2 == null) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Необходимо указать хотя бы один аргумент");
+        }
+        return ResponseEntity.ok(num1+" - "+num2+"="+calculatorService.minus(num1,num2));
 
     }
     @GetMapping("multiple")
-    public String multiple(@RequestParam(required = false,name = "num1") Integer num1,@RequestParam(required = false,name = "num2") Integer num2) {
-
-        return num1+" * "+num2+"="+calculatorService.multiple(num1,num2);
+    public ResponseEntity<String> multiple(@RequestParam Integer num1,@RequestParam Integer num2) {
+        if (num1 == null || num2 == null) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Необходимо указать хотя бы один аргумент");
+        }
+        return ResponseEntity.ok(num1+" * "+num2+"="+calculatorService.multiple(num1,num2));
 
     }
     @GetMapping("divide")
-    public String divide(@RequestParam(required = false,name = "num1") Integer num1,@RequestParam(required = false,name = "num2") Integer num2) {
-
-        return num1+" / "+num2+"="+calculatorService.divide(num1,num2);
+    public ResponseEntity<String> divide(@RequestParam("num1") Integer num1,@RequestParam("num2") Integer num2) {
+           if (num1 == 0 || num2 == 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ошибка: необходимо указать оба числа");
+        }
+        if (num2 == 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ошибка: деление на ноль");
+        }
+        return ResponseEntity.ok(num1+" / "+num2+"="+calculatorService.divide(num1,num2));
 
     }
 }
