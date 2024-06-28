@@ -2,7 +2,6 @@ package com.skypro.HW.controller;
 
 import com.skypro.HW.service.CalculatorService;
 import com.skypro.HW.service.impl.CalculatorServiceImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -84,26 +83,36 @@ public class CalculatorControllerParamTest {
 
     private static Stream<Arguments> argumentDivideParameterTest() {
         return Stream.of(
-                Arguments.of(5, 5, 1.0),
-                Arguments.of(-5, 1, -5.0),
-                Arguments.of(0, 0, 0),
-                Arguments.of(-5, -5, 1.0)
+                Arguments.of(5, 5, 1),
+                Arguments.of(-5, 1, -5),
+                Arguments.of(1, 1, 1),
+                Arguments.of(-5, -5, 1)
         );
     }
 
     @ParameterizedTest
     @MethodSource("argumentDivideParameterTest")
-    public void checkDivideParameterTest(Integer num1, Integer num2, double expected) {
-        assertThrows(IllegalArgumentException.class, () -> calculatorService.divide(num1, num2));
-        Double actual = calculatorService.divide(num1, num2);
+    public void checkDivideParameterTest(Integer num1, Integer num2, Integer expected) {
+        Integer actual = (int) calculatorService.divide(num1, num2);
         assertEquals(expected, actual);
     }
 
-    @ParameterizedTest
-    @CsvSource(value = {"16,4,4", "20,5,4", "36,6,6"})
-    void checkDivideTest(Integer num1, Integer num2, Double expected) {
-        assertThrows(IllegalArgumentException.class, ()->calculatorService.divide(num1, num2));
-        assertEquals(expected, calculatorService.divide(num1, num2));
+
+    private static Stream<Arguments> argumentDivideParameterTestByZero() {
+        return Stream.of(
+                Arguments.of(5, 0, 1),
+                Arguments.of(-5, 0, -5),
+                Arguments.of(1, 0, 1),
+                Arguments.of(-5, 0, 1)
+        );
     }
+
+    @ParameterizedTest
+    @MethodSource("argumentDivideParameterTestByZero")
+    public void checkDivideByZero(Integer num1, Integer num2, Integer expected) {
+        assertThrows(IllegalArgumentException.class, () -> calculatorService.divide(num1, num2));
+
+    }
+
 
 }

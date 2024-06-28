@@ -3,13 +3,7 @@ package com.skypro.HW.controller;
 import com.skypro.HW.service.CalculatorService;
 import com.skypro.HW.service.impl.CalculatorServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +19,7 @@ class CalculatorControllerTest {
         Integer result = calculatorService.plus(num1, num2);
         assertEquals(expected, result);
     }
+
     @Test
     void checkMinusExpression() {
         Integer expected = 10;
@@ -33,27 +28,30 @@ class CalculatorControllerTest {
         Integer result = calculatorService.minus(num1, num2);
         assertEquals(expected, result);
     }
+
     @Test
-       void checkMultipleExpression() {
+    void checkMultipleExpression() {
         Integer expected = 30;
         Integer num1 = 6;
         Integer num2 = 5;
         Integer result = calculatorService.multiple(num1, num2);
         assertEquals(expected, result);
     }
+
     @Test
-        void checkDivideExpression() {
+    void checkDivideExpression() {
         Double expected = 3.;
         Integer num1 = 15;
         Integer num2 = 5;
         Double result = calculatorService.divide(num1, num2);
         assertEquals(expected, result);
     }
+
     @Test
     void checkDivideByZero() {
         Integer num1 = 15;
         Integer num2 = 0;
-        assertThrows(IllegalArgumentException.class, ()->calculatorService.divide(num1, num2));
+        assertThrows(IllegalArgumentException.class, () -> calculatorService.divide(num1, num2));
     }
 
 }
